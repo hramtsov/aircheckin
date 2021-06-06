@@ -1,5 +1,6 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  ssr: false,
   head: {
     title: 'aircheckin',
     htmlAttrs: {
@@ -12,7 +13,9 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    ],
+
+
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -25,6 +28,8 @@ export default {
   plugins: [
     { src: '~/plugins/masks.js', ssr: false },
     { src: '~/plugins/filters.js', ssr: false },
+    { src: '~/plugins/slider.js', ssr: false },
+    // { src: '~/plugins/lightbox.js', ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -41,15 +46,18 @@ export default {
   ],
   axios: {
     baseURL: 'http://api.aircheckin.ru/v1',
+    // withCredentials: true,
+    // credentials: true,
   },
 
 
   auth: {
     strategies: {
       local: {
+        user: { autoFetch: true, property: 'data', },
         endpoints: {
           login: { url: '/renter/create-token', method: 'post', propertyName: 'token' },
-          user: { url: '/user/info', method: 'get', propertyName: 'data' },
+          user: { url: '/renter/user', method: 'get', },
           // logout: { url: '/auth/logout', method: 'post' }
           logout: false,
         }
@@ -57,13 +65,13 @@ export default {
     },
 
     redirect: {
-      login: '/login',
-      logout: '/login',
+      login: '/auth',
+      logout: '/auth',
       // callback: '/login',
-      home: '/'
+      home: '/deposit'
     },
 
-    resetOnError: true,
+    // resetOnError: true,
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
