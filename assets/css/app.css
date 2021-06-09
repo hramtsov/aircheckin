@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 /* Box sizing rules */
 *,
@@ -7,7 +7,7 @@
 *::after {
   box-sizing: border-box;
 }
- 
+
 /* Remove default padding */
 ul[class],
 ol[class] {
@@ -85,43 +85,89 @@ select {
 
 
 body {
-	background: #FCF7F1;
 	padding: 0;
 	margin: 0;
 
 	font-family: 'Roboto Slab', serif;
 }
 
+.bgLight {
+	background: #FCF7F1;
+	min-height: 100vh;
+}
+
+.relative {
+	position: relative;
+}
+
+.bgYellow {
+	background: #F5BF53;
+	min-height: 100vh;
+	position: relative;
+}
+
+.big-circle {
+	position: absolute;
+	right: 0;
+	top: 230px;
+	z-index: 0;
+}
+
+.small-circle {
+	position: absolute;
+	left: 85px;
+	top: 300px;
+	z-index: 0;
+}
+
 .container {
 	width: 100%;
-	padding: 25px;
+	padding: 0 25px;
+	position: relative;
+	z-index: 1;
 }
 
 a {
 	text-transform: none;
+	color: #000;
+	transition: 0.3s all ease-in-out;
 }
 
-header {
-	padding: 30px 25px;
+a:hover {
+	opacity: 0.6;
+}
+
+
+.top-bar {
 	display: flex;
-	flex-direction: row;
 	justify-content: space-between;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 20px;
 }
 
-.logo {
-	font-family: 'FuturaDemiC';
-    font-weight: normal;
-    font-style: normal;
-	font-size: 18px;
-	letter-spacing: 1px;
-	color: #404040;
+.top-bar-right {
+	display: block;
+	text-align: right;
+}
+
+.top-bar-button {
+	font-family: 'FuturaLightC';
+	text-decoration: none;
+	cursor: pointer;
+	transition: 0.3s all ease-in-out;
+}
+
+.top-bar-button:hover {
+	opacity: 0.6;
 }
 
 .link-back {
 	display: flex;
 	flex-direction: row;
-	/* justify-items: center; */
 	align-items: center;
+	cursor: pointer;
+	
 }
 
 .link-back span {
@@ -129,9 +175,18 @@ header {
 	font-family: 'FuturaMediumC';
     font-weight: 500;
     font-style: normal;
-	font-size: 11px;
+	font-size: 13px;
+	padding-top: 2px;
+	/* line-height: 7px; */
 	color: #000;
-	letter-spacing: 1px;
+	letter-spacing: 1.5px;
+
+	transition: 0.3s all ease-in-out;
+}
+
+.link-back:hover span {
+	/* color: #E99021; */
+	opacity: 0.5;
 }
 
 .title-welcome {
@@ -152,7 +207,7 @@ header {
 	margin-bottom: 20px;
 }
 
-.form-text {
+input.form-text {
 	background: #FFFFFF;
 	border: 1px solid rgba(116, 91, 86, 0.28);
 	box-sizing: border-box;
@@ -162,13 +217,87 @@ header {
 	font-size: 13px;
 	line-height: 18px;
 
-	margin-bottom: 10px;
+	/* margin-bottom: 10px; */
+}
+
+textarea.form-text {
+	background: #FFFFFF;
+	border: 1px solid rgba(116, 91, 86, 0.28);
+	box-sizing: border-box;
+	border-radius: 25px;
+	width: 100%;
+	padding: 17px 20px 16px;
+	font-size: 13px;
+	line-height: 18px;
+}
+
+select.form-text {
+	background: #FFFFFF;
+	border: 1px solid rgba(116, 91, 86, 0.28);
+	box-sizing: border-box;
+	border-radius: 100px;
+	width: 100%;
+	padding: 17px 20px 16px;
+	font-size: 13px;
+	line-height: 18px;
+
+	outline: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+	appearance: none !important;
+
+	/* margin-bottom: 10px; */
+
+	
+}
+
+.select-wrapper {
+	position: relative;
+}
+
+.select-wrapper span.arrow {
+	position: absolute;
+	/* content: '<svg width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.69178 4.37128C3.89703 4.55602 4.21318 4.53939 4.39791 4.33415L7.40839 0.989448C7.59313 0.784201 7.57651 0.468056 7.37126 0.283317C7.16601 0.0985794 6.84987 0.115205 6.66513 0.320453L3.98914 3.29352L1.01608 0.617534C0.810833 0.432796 0.494687 0.449422 0.309949 0.65467C0.125211 0.859917 0.141837 1.17606 0.347084 1.3608L3.69178 4.37128ZM3.50069 3.52612L3.52697 4.02591L4.52559 3.97339L4.49931 3.4736L3.50069 3.52612Z" fill="#343434"/></svg>'; */
+	/* content: 'ads'; */
+	right: 22px;
+	top: 15px;
+	z-index: 100;
+}
+
+.form-register {
+
+}
+
+.form-register input, .form-register select, .form-register textarea {
+	margin-bottom: 8px;
+}
+
+.passport-data {
+	display: flex;
+}
+
+.passport-data > input {
+	display: inline-block;
+}
+
+.passport-data > input.passport-serial {
+	width: calc(40% - 5px);
+	margin-right: 5px;
+	display: inline-block;
+}
+.passport-data > input.passport-number {
+	width: calc(60% - 5px);
+	margin-left: 5px;
+	display: inline-block;
 }
 
 .form-button-go {
 	background: #E99021;
 	border-radius: 100px;
-	padding: 17px 20px 16px;
+	padding: 20px 20px 17px; 
+	/* 18px 20px 15px; */
+	
 	text-align: center;
 
 	font-family: 'FuturaDemiC';
@@ -177,21 +306,605 @@ header {
 
 	color: #fff;
 	font-size: 14px;
-	line-height: 15px;
+	line-height: 14px;
 
 	text-transform: uppercase;
+	text-decoration: none;
 
 	width: 100%;
+	display: block;
 	border: none;
 
-	margin-top: 10px;
+	margin: 20px 0 10px;
+
+	cursor: pointer;
+	transition: 0.3s all ease-in-out;
+	
+}
+
+.form-button-go:hover {
+	background: #F5BF53;
 }
 
 .auth-phone {
+	/* font-family: 'FuturaBookC'; */
+    /* font-weight: normal; */
+    /* font-style: normal; */
+	font-weight: 300;
+	font-size: 11px;
+	letter-spacing: 3px;
+	text-align: center;
+	margin: 15px 0;
+}
+
+.text-error {
 	font-family: 'FuturaBookC';
     font-weight: normal;
     font-style: normal;
-	font-size: 12px;
-	letter-spacing: 3px;
+	font-size: 14px;
+	color: red;
+	margin-top: 5px;
+	padding: 0 20px;
+}
+
+.text-code-error {
+	font-family: 'FuturaBookC';
+    font-weight: normal;
+    font-style: normal;
+	font-size: 14px;
+	color: red;
+	margin-top: 5px;
+	padding: 0 20px;
 	text-align: center;
 }
+
+.general-helper {
+	font-family: 'FuturaBookC';
+    font-weight: normal;
+    font-style: normal;
+	font-size: 14px;
+	color: #B1B1B1;
+	text-align: center;
+	margin-top: 15px;
+}
+
+.text-enter-sms {
+	font-size: 14px;
+	text-align: center;
+	font-weight: 400;
+	line-height: 22px;
+	letter-spacing: 1px;
+}
+
+.form-code-text {
+	width: 171px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin: 0 auto;
+	position: relative;
+}
+
+.form-code-text > div {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.form-code-text input {
+	border: none;
+	width: 100%;
+	line-height: 32px;
+	top: 0;
+	left: 0;
+	font-size: 15px;
+	color: #A69275;
+	text-align: center;
+
+	width: 36px;
+	height: 36px;
+	background: #fff;
+	border-radius: 50%;
+	box-shadow: none;
+}
+
+.form-code-text input:focus {
+	border: none;
+	box-shadow: none;
+}
+
+/* .form-code-text span {
+	top: 0;
+	
+} */
+
+input {outline:none;}
+:active, :hover, :focus {
+    outline: 0;
+    outline-offset: 0;
+}
+
+.guarantee-deposit {
+	font-size: 12px;
+	text-align: center;
+	color: #333333;
+	margin: 20px auto;
+	max-width: 72%;
+}
+
+.waiting-deposit {
+	font-size: 14px;
+	text-align: center;
+	color: #000;
+	margin: 20px auto;
+	max-width: 72%;
+}
+
+.type-apartment {
+	background: #fff;
+	position: relative;
+	z-index: 1000;
+	width: calc(100% - 50px);
+	margin: -56px auto;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.15);
+	border-radius: 12px;
+
+	color: #A69275;
+	font-weight: 900;
+	font-size: 13px;
+	line-height: 17px;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+	
+	padding: 17px 15px;
+	text-align: center;
+}
+
+.about-booking {
+	margin: 80px 0 0 0;
+}
+
+.booking-header {
+	display: flex;
+	flex-direction: row;
+	/* justify-content: space-between; */
+	align-items: center;
+}
+
+.booking-header-title {
+	color: #343434;
+	font-weight: bold;
+	font-size: 16px;
+	line-height: 28px;
+}
+
+.booking-header-value {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 24px;
+	letter-spacing: -0.011em;
+	text-transform: uppercase;
+	color: #343434;
+}
+
+.booking-header-value span {
+	margin-left: 12px;
+}
+
+.booking-row {
+	display: flex;
+	flex-direction: row;
+	margin: 30px 0;
+}
+
+.booking-row-title {
+	width: 95px;
+	font-size: 11px;
+	text-transform: uppercase;
+	color: #333333;
+	font-weight: 500;
+	line-height: 24px;
+
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+.booking-row-value {
+	/* text-align: right; */
+	font-size: 13px;
+	color: #333333;
+	font-weight: 300;
+	line-height: 24px;
+
+	flex-grow: 1;
+	flex-shrink: 1;
+	padding-left: 10px;
+}
+
+.suf-rub {
+	opacity: 0.5;
+	margin-left: 5px;
+	font-family: 'Roboto Slab', serif;
+}
+
+.swiper-slide {
+	position: relative;
+}
+
+.slider-icon-fullimage {
+	position: absolute;
+	right: 15px;
+	top: 15px;
+	cursor: pointer;
+	transition: 0.3s all ease-in-out;
+}
+
+.slider-icon-fullimage:hover {
+	opacity: 0.7;
+}
+
+.apartment-swiper {
+	margin: 30px 0 30px;
+}
+
+.count-nights {
+	margin-left: 5px;
+	opacity: 0.8;
+}
+
+.title-notify {
+	font-size: 24px;
+	line-height: 18px;
+	text-align: center;
+	margin: 35px 0 30px;
+}
+
+.text-notify {
+	font-size: 14px;
+	line-height: 21.5px;
+	text-align: center; 
+}
+
+
+
+
+
+/* ------ */
+
+input[type=checkbox] {
+	display: none;
+} 
+
+.checkbox {
+	margin-bottom: 15px;
+
+}
+
+.checkbox label {
+	display: inline-block;
+	cursor: pointer;
+	position: relative;
+	padding-left: 30px;
+	font-weight: 600;
+} 
+
+.checkbox label:before {
+	/* border-radius: 3px; */
+	position: absolute;
+	content: "";
+	width: 19px;
+	height: 19px;
+	border-radius: 50%;
+	left: 0;
+	top: 3px;
+
+	box-shadow: 0 0 0 1px #fff, 0 0 0 2px #F5BF53;
+	box-sizing: border-box;
+}
+
+input[type=checkbox]:checked + label:before {
+	background: #F5BF53;
+	box-shadow: 0 0 0 1px #fff, 0 0 0 2px #F5BF53;
+}
+
+/* ------ */
+
+.label-textarea {
+	padding-left: 20px;
+	font-size: 13px; 
+	margin-bottom: 3px;
+}
+
+.error-field {
+	color: red;
+	font-size: 0.8rem;
+	margin-top: 5px;
+}
+
+.checkbox .error-field {
+	padding-left: 30px;
+}
+
+.page-title {
+	/* font-family: 'Roboto', sans-serif; */
+	font-family: 'FuturaMediumC';
+	/* font-weight: 500; */
+	font-size: 20px;
+	letter-spacing: 0.5px;
+}
+
+
+.bookings {
+	margin: 15px 0;
+}
+
+.booking-item {
+	width: 100%;
+	display: block;
+	text-decoration: none;
+	background: #FCF7F1;
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 6px;
+	padding: 10px;
+	border-right: 6px solid #E99021;
+	border-left: 1px solid transparent;
+	border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+	margin-bottom: 15px;
+	transition: 0.3s all ease-in-out;
+}
+
+.booking-item:hover {
+	opacity: 1;
+	border-left: 1px solid #E99021;
+	border-top: 1px solid #E99021;
+	border-bottom: 1px solid #E99021;
+}
+
+.booking-status {
+	color: #333333;
+	font-size: 11px;
+	font-weight: 500;
+	text-align: right;
+}
+
+.link-pay-deposit {
+	color: #333333;
+	text-decoration: none;
+}
+
+.link-pay-deposit svg, .booking-status span svg {
+	margin-left: 5px;
+}
+
+.booking-apartment-name {
+	font-size: 13px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	margin: 10px 0 5px 0;
+	line-height: 18px;
+}
+
+.booking-dates {
+	color: #333333;
+	font-size: 12px;
+	font-weight: 300;
+}
+
+.booking-info {
+	margin: 10px 0;
+}
+
+.booking-apartment-address {
+	font-size: 12px;
+	color: #A69275;
+	font-weight: 400;
+	margin: 6px 0;
+}
+
+.booking-main-info {
+	padding-left: 15px;
+	flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.booking-photo-mini {
+	flex-grow: 0;
+    flex-shrink: 0;
+	width: 110px;
+}
+
+/* .booking-photo-mini img {
+	width: 100%;
+	height: auto;
+	border-radius: 4px;
+} */
+
+.booking-footer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.booking-count-nights {
+	font-size: 12px;
+	font-weight: 500;
+	display: flex;
+	align-items: center;
+}
+
+.booking-count-nights svg {
+	margin-right: 8px;
+}
+
+.booking-price {
+	font-size: 12px;
+	font-weight: 500;
+}
+
+.booking-photo-mini-bg {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	border-radius: 4px;
+	width: 100%;
+	height: 90px;
+}
+
+.booking-tariff {
+	background: #EFE7DE;
+	padding: 15px 25px;
+	width: calc(100% + 50px);
+	margin-left: -25px;
+	margin-bottom: 25px;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+
+	/* font-family: 'Roboto', sans-serif; */
+	/* font-weight: 600; */
+
+	font-family: 'FuturaDemiC';
+	letter-spacing: 0.5px;
+}
+
+.booking-tariff-price {
+
+}
+
+.booking-tariff .form-button-go {
+	width: auto;
+	margin: 0;
+	padding: 14px 20px 12px;
+}
+
+/* .booking-tariff-price .suf-rub {
+	margin-right: 5px;
+	opacity: 1;
+} */
+
+
+.booking-document-link {
+	display: flex;
+	flex-direction: row;
+	/* justify-content: space-between; */
+	align-items: center;
+	cursor: pointer;
+	margin: 15px 0;
+	outline: none;
+	text-decoration: none;
+
+	transition: 0.3s all ease-in-out;
+}
+
+.booking-document-icon {
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	/* border: 1px solid #F5BF53 !important; */
+	box-shadow: 0 0 0 1px #F5BF53;
+	border-radius: 6px;
+	padding: 8px 7px; 
+}
+
+.page-inner {
+	padding-bottom: 20px;
+}
+
+.booking-document-link span {
+	padding-left: 15px;
+	font-weight: 500;
+	
+}
+
+.booking-document-link:hover {
+	opacity: 0.6;
+}
+
+.booking-person-name {
+	font-size: 18px;
+	font-weight: 500;
+	margin-bottom: 15px;
+}
+
+.booking-person-email, .booking-person-phone {
+	/* color: #404040; */
+}
+
+.booking-person-email span, .booking-person-phone span {
+	color: #404040;
+	margin-left: 12px;
+	font-weight: 300;
+}
+
+
+
+.notify {
+	font-size: 16px;
+	margin: 20px 0;
+	padding: 12px 20px;
+	border-radius: 16px;
+	transition: 0.3s all ease-in-out;
+	/* display: none; */
+}
+
+.notify-success {
+	background: rgba(33, 160, 56, 0.2);
+	/* border: 1px solid rgba(33, 160, 56, 0.5); */
+}
+
+.notify-error {
+	background: rgba(255, 0, 0, 0.15);
+	/* border: 1px solid rgba(255, 0, 0, 0.5); */
+}
+
+.notify-warning {
+	border: 1px solid #E99021;
+	background: #F8E4BA;
+}
+
+.notify-title {
+	font-family: 'FuturaMediumC';
+	font-size: 18px;
+	/* font-size: 13px; */
+}
+.notify-text {
+	font-family: 'FuturaLightC';
+	line-height: 18px;
+	color: rgba(0,0,0,0.6);
+	/* font-size: 13px; */
+}
+
+.fade-enter-active, .fade-leave-active {
+	transition: opacity .3s;
+}
+.fade-enter, .fade-leave-to {
+	opacity: 0;
+} 
+
+.form-text-item {
+	margin-bottom: 10px;
+}
+
+.form-text-item .error-field {
+	padding: 0 20px;
+}
+
+.form-text-item input {
+	margin: 0;
+}
+
+input.form-text.form-text-error {
+	border-color: red;
+} 

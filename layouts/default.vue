@@ -1,22 +1,49 @@
 <template>
-  <div>
-    <header>
-      <div class="logo">aeroapart.ru</div>
-      <div>
-        <svg
-          width="37"
-          height="12"
-          viewBox="0 0 37 12"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect x="9" width="28" height="2" rx="1" fill="#404040" />
-          <rect y="5" width="37" height="2" rx="1" fill="#404040" />
-          <rect x="16" y="10" width="21" height="2" rx="1" fill="#404040" />
-        </svg>
-      </div>
-    </header>
+  <div class="bgLight">
+    <Header />
 
     <Nuxt />
+
+    <div class="big-circle">
+      <svg
+        width="209"
+        height="338"
+        viewBox="0 0 209 338"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M231.757 63.1714C229.271 61.951 226.832 60.8439 224.226 59.674C166.369 35.3574 84.4077 47.0862 52.3964 105.811C27.7833 151.011 33.5091 209.042 66.7735 246.525C119.537 306.213 234.783 301.27 292.812 244.789C303.508 234.41 312.508 221.676 315.531 207.46C317.378 198.809 317.001 189.894 315.906 181.282C309.649 131.348 277.729 85.692 231.757 63.1714Z"
+          fill="#F9F2E2"
+          fill-opacity="0.28"
+        />
+      </svg>
+    </div>
+
+    <div class="small-circle">
+      <svg
+        width="50"
+        height="52"
+        viewBox="0 0 50 52"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M10.9369 8.95912C10.5746 9.30962 10.2347 9.65892 9.87367 10.033C2.14216 18.4409 -0.903326 33.1992 7.17886 42.3019C13.4011 49.3038 23.6913 51.9016 32.1611 48.5167C45.6355 43.1619 51.8955 23.1225 45.8018 9.70299C44.684 7.23134 43.0585 4.90504 40.8104 3.51086C39.443 2.66115 37.8932 2.176 36.351 1.83238C27.4145 -0.175206 17.6281 2.47548 10.9369 8.95912Z"
+          fill="#F9F2E2"
+          fill-opacity="0.28"
+        />
+      </svg>
+    </div>
   </div>
 </template>
+
+
+<script>
+import Header from "@/components/Header";
+export default {
+  components: {
+    Header,
+  },
+};
+</script>

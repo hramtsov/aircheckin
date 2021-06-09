@@ -1,6 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   ssr: false,
+  mode: 'spa',
   head: {
     title: 'aircheckin',
     htmlAttrs: {
@@ -24,20 +25,36 @@ export default {
     '@/assets/css/app.css'
   ],
 
+  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
+  buildModules: [
+    '@nuxtjs/laravel-echo',
+  ],
+
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/masks.js', ssr: false },
     { src: '~/plugins/filters.js', ssr: false },
     { src: '~/plugins/slider.js', ssr: false },
-    // { src: '~/plugins/lightbox.js', ssr: false },
+    { src: '~/plugins/echo.js', ssr: false },
+    { src: '~/plugins/components.js' },
+    // { src: '~/plugins/socketio', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [
-  ],
+
+
+  echo: {
+    broadcaster: 'pusher',
+    key: 'QLpCPsbPMzfpIjIDifb2W',
+    wsHost: 'api.aircheckin.ru',
+    wsPort: 6001,
+    forceTLS: false,
+    disableStats: true,
+    // authModule: true
+  },
+
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -68,13 +85,20 @@ export default {
       login: '/auth',
       logout: '/auth',
       // callback: '/login',
-      home: '/deposit'
+      home: '/bookings'
     },
 
-    // resetOnError: true,
+    resetOnError: false,
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  }
+  },
+
+  loading: {
+    color: '#E99021',
+    height: '3px'
+  },
+
+
 }

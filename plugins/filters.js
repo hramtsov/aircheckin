@@ -1,8 +1,8 @@
 import Vue from 'vue'
-// import moment from 'moment'
-// import 'moment/locale/ru'
+import moment from 'moment'
+import 'moment/locale/ru'
 
-// moment.locale('ru')
+moment.locale('ru')
 
 
 // var lenPhone = phone.length;
@@ -25,13 +25,13 @@ Vue.filter('phone_number', function (value) {
 	var tt = value.split('');
 
 	if (lenPhone == 12) {
-		tt.splice(2, "", "(");
-		tt.splice(6, "", ")");
+		tt.splice(2, "", " (");
+		tt.splice(6, "", ") ");
 		tt.splice(10, "", "-");
 		tt.splice(13, "", "-");
 	} else if (lenPhone == 13) {
-		tt.splice(3, "", "(");
-		tt.splice(7, "", ")");
+		tt.splice(3, "", " (");
+		tt.splice(7, "", ") ");
 		tt.splice(11, "", "-");
 		tt.splice(14, "", "-");
 	}
@@ -73,26 +73,30 @@ Vue.filter('phone_number', function (value) {
 
 
 // Склонение числительных
-// Vue.filter('declOfNum', function (value, array, show_value = true) {
-// 	console.log(value)
-// 	if (typeof value !== 'undefined') {
-// 		var cases = [2, 0, 1, 1, 1, 2]
+Vue.filter('declOfNum', function (value, array, show_value = true, delimiter = true) {
+	// console.log(value)
+	if (typeof value !== 'undefined') {
+		var cases = [2, 0, 1, 1, 1, 2]
 
-// 		if (value == null || value === null) {
-// 			value = 0;
-// 		}
+		if (value == null || value === null) {
+			value = 0;
+		}
 
-// 		// Делим на разряды число
-// 		var value_number = value.toString().replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ')
+		if (delimiter) {
+			// Делим на разряды число
+			var value_number = value.toString().replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ');
+		} else {
+			value_number = value;
+		}
 
-// 		var result = show_value ? value_number + ' ' : ''
+		var result = show_value ? value_number + ' ' : ''
 
-// 		result += array[(value % 100 > 4 && value % 100 < 20) ? 2 : cases[(value % 10 < 5) ? value % 10 : 5]]
-// 		return result
-// 	} else {
-// 		return;
-// 	}
-// })
+		result += array[(value % 100 > 4 && value % 100 < 20) ? 2 : cases[(value % 10 < 5) ? value % 10 : 5]]
+		return result
+	} else {
+		return;
+	}
+})
 
 
 
@@ -130,18 +134,52 @@ Vue.filter('number', function (value) {
 
 
 // Время
-// Vue.filter('date_t', function (value) {
-// 	if (value) {
-// 		return moment.unix(value).format('HH:mm')
-// 	}
-// })
+Vue.filter('date_t', function (value) {
+	if (value) {
+		return moment(value).format('HH:mm') // .unix
+	}
+})
 
 // Дата цифрами
-// Vue.filter('date_d', function (value) {
-// 	if (value) {
-// 		return moment.unix(value).format('DD.MM.YYYY')
-// 	}
-// })
+Vue.filter('date_d', function (value) {
+	if (value) {
+		return moment(value).format('DD.MM.YYYY')
+	}
+})
+
+// Год цирфами
+Vue.filter('date_year', function (value) {
+	if (value) {
+		return moment(value).format('YYYY')
+	}
+})
+
+// День + месяц прописью (сокр)
+Vue.filter('date_dm', function (value) {
+	if (value) {
+		return moment(value).format('DD MMM')
+	}
+})
+
+
+
+
+
+// Сколько ночей прошло
+Vue.filter('count_nights', function (end, start) {
+	if (end && start) {
+		// var start = moment(start);
+		// var end = moment(end);
+		// var diff = end.diff(start, 'days')
+
+		// return diff;
+
+		var day_start = parseInt(moment(start).format('DD'));
+		var day_end = parseInt(moment(end).format('DD'));
+
+		return day_end - day_start;
+	}
+})
 
 // Дата с текстовым месяцем
 // Vue.filter('date_td', function (value) {
