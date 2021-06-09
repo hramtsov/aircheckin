@@ -20,9 +20,9 @@
             />
           </svg>
         </div>
-        <div class="profile-lastname">{{ $auth.user.last_name }}</div>
+        <div class="profile-lastname">{{ profile.last_name }}</div>
         <div class="profile-firstname">
-          {{ $auth.user.first_name }} {{ $auth.user.middle_name }}
+          {{ profile.first_name }} {{ profile.middle_name }}
         </div>
 
         <div class="profile-dilimiter"></div>
@@ -54,7 +54,7 @@
               />
             </svg>
           </div>
-          <span>{{ $auth.user.email }}</span>
+          <span>{{ profile.email }}</span>
         </div>
 
         <div class="profile-info-row">
@@ -79,7 +79,7 @@
               </defs>
             </svg>
           </div>
-          <span>{{ $auth.user.phone | phone_number }}</span>
+          <span>{{ profile.phone | phone_number }}</span>
         </div>
 
         <div class="profile-info-row">
@@ -129,7 +129,7 @@
               />
             </svg>
           </div>
-          <span>{{ $auth.user.birth_date }}</span>
+          <span>{{ profile.birth_date }}</span>
         </div>
 
         <div class="profile-info-row">
@@ -173,8 +173,8 @@
           </div>
           <span v-if="$auth.user.passport_type == 1"
             >Паспорт РФ<small class="passport-number"
-              >{{ $auth.user.passport_serial }}
-              <span>{{ $auth.user.passport_number }}</span></small
+              >{{ profile.passport_serial }}
+              <span>{{ profile.passport_number }}</span></small
             ></span
           >
         </div>
@@ -188,7 +188,13 @@
 export default {
   middleware: ["auth"],
   data() {
-    return {};
+    return {
+      profile: {},
+    };
+  },
+  async asyncData({ $axios, error, params }) {
+    let response = await $axios.$get(`/renter/user`);
+    return { profile: response.data };
   },
 };
 </script>

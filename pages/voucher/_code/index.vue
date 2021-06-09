@@ -26,16 +26,18 @@
         </Notify>
 
         <!-- Если депозит не внесен -->
-        <template v-if="booking.status < 3">
+        <template v-if="booking.status == 2 && booking.deposit > 0">
           <div class="title-welcome">УРА!</div>
           <div class="text-welcome">
             <p>
-              Здравствуйте, пройдите регистрацию.<br />На основании внесенных
-              данных сформируется личный кабинет с договором и кнопкой оплаты.
+              Здравствуйте! Мы забронировали для вас апартамент, для
+              подтверждения пожалуйста оплатите депозит до 21:00 Мск
             </p>
             <p>
               Ключи можно будет получить на основании паспорта в день заезда по
-              адресу:<br />{{ booking.apartment.address }}
+              адресу:<br /><span class="address-booking">{{
+                booking.apartment.address
+              }}</span>
             </p>
           </div>
 
@@ -66,7 +68,11 @@
         </template>
 
         <!-- Бронь подтверждена -->
-        <template v-if="booking.status == 3">
+        <template
+          v-if="
+            booking.status == 3 || (booking.status == 2 && booking.deposit == 0)
+          "
+        >
           <div class="title-welcome">УРА!</div>
           <div class="text-welcome">
             <p>
@@ -337,5 +343,9 @@ export default {
   height: 248px;
   background-position: center;
   background-size: cover;
+}
+.address-booking {
+  /* font-family: "FuturaLightC"; */
+  font-weight: 500;
 }
 </style>

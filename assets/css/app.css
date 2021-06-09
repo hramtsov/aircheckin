@@ -468,7 +468,7 @@ input {outline:none;}
 .booking-header {
 	display: flex;
 	flex-direction: row;
-	/* justify-content: space-between; */
+	justify-content: space-between;
 	align-items: center;
 }
 
