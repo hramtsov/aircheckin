@@ -27,7 +27,7 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    '@nuxtjs/laravel-echo',
+    // '@nuxtjs/laravel-echo',
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -62,7 +62,7 @@ export default {
     '@nuxtjs/auth-next'
   ],
   axios: {
-    baseURL: 'http://api.aircheckin.ru/v1',
+    baseURL: 'https://api.aircheckin.ru/v1',
     // withCredentials: true,
     // credentials: true,
   },
