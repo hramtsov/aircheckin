@@ -3,5 +3,5 @@ docker rm $(docker ps -a -q)
 docker images
 docker rmi $(docker images -q)
 git pull
-docker build -t voron .
-docker run -it -p 5000:5000 voron
+docker build -t aircheckin .
+docker run -it -p 5000:5000 aircheckin
