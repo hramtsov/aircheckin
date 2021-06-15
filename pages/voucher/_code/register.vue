@@ -144,8 +144,8 @@
       <div class="checkbox">
         <input type="checkbox" id="i_agree" v-model="form.i_agree" />
         <label for="i_agree"
-          >Я согласен с правилами сервиса
-          <nuxt-link to="/">aeroapart.ru/lealegal</nuxt-link></label
+          >Я согласен с
+          <nuxt-link to="/terms-of-use">правилами</nuxt-link> сервиса</label
         >
 
         <div v-if="errors.i_agree" class="error-field">
@@ -171,15 +171,15 @@ export default {
     return {
       booking: {},
       form: {
-        first_name: "",
-        last_name: "",
-        middle_name: "",
-        phone: "",
-        email: "",
-        birth_date: "",
-        passport_type: 1,
-        passport_serial: "",
-        passport_number: "",
+        first_name: this.$auth.user.first_name,
+        last_name: this.$auth.user.last_name,
+        middle_name: this.$auth.user.middle_name,
+        phone: this.$auth.user.phone,
+        email: this.$auth.user.email,
+        birth_date: this.$auth.user.birth_date,
+        passport_type: this.$auth.user.passport_type,
+        passport_serial: this.$auth.user.passport_serial,
+        passport_number: this.$auth.user.passport_number,
         description: "",
         personal_data: false,
         i_agree: false,

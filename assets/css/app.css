@@ -295,7 +295,11 @@ select.form-text {
 .form-button-go {
 	background: #E99021;
 	border-radius: 100px;
-	padding: 20px 20px 17px; 
+	padding: 10px 20px 10px; 
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	/* 18px 20px 15px; */
 	
 	text-align: center;
@@ -306,13 +310,14 @@ select.form-text {
 
 	color: #fff;
 	font-size: 14px;
-	line-height: 14px;
+	min-height: 50px;
+	/* line-height: 36px; */
 
 	text-transform: uppercase;
 	text-decoration: none;
 
 	width: 100%;
-	display: block;
+	/* display: block; */
 	border: none;
 
 	margin: 20px 0 10px;
@@ -908,3 +913,58 @@ input[type=checkbox]:checked + label:before {
 input.form-text.form-text-error {
 	border-color: red;
 } 
+
+.page-text {
+	font-size: 13px;
+	/* color: rgba(0,0,0, 0.5); */
+}
+
+.page-text p {
+	margin: 10px 0;
+	/* color: rgba(0,0,0, 0.5) !important; */
+}
+
+.page-text p span {
+	/* color: rgba(0,0,0, 0.5) !important; */
+}
+
+
+
+button[disabled] {
+	opacity: 0.5;
+	cursor: default;
+}
+
+button[disabled]:hover {
+	background: #E99021;
+}
+
+
+
+@keyframes donut-spin {
+	0% {
+	  transform: rotate(0deg);
+	}
+	100% {
+	  transform: rotate(360deg);
+	}
+  }
+  .donut {
+	display: inline-block;
+	border: 2px solid rgba(255, 255, 255, 0.4);
+	border-left-color: #F8E4BA;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	animation: donut-spin 1.2s linear infinite;
+  }
+
+
+
+  a[disabled] {
+	pointer-events: none;
+	cursor: default;
+	text-decoration: none;
+	opacity: 0.5;
+	/* color: black; */
+  }

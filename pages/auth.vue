@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <template v-if="status == 'phone'">
-        <div class="title-welcome">УРА!</div>
+        <div class="title-welcome">Здравствуйте!</div>
         <div class="text-welcome">
           <p>
             Для продолжения необходимо подтвердить ваш номер телефона, мы
@@ -19,10 +19,24 @@
         />
 
         <div v-if="errors.phone" class="text-error">{{ errors.phone[0] }}</div>
-        <button class="form-button-go" @click="sendPhone()">
-          Прислать код
+        <button
+          class="form-button-go"
+          @click="sendPhone()"
+          :disabled="disabled_send"
+        >
+          {{ send_title }}
         </button>
-        <div v-if="error" class="general-helper">{{ error }}</div>
+
+        <div
+          v-if="have_code && phone"
+          class="have_code"
+          @click="status = 'code'"
+        >
+          У меня уже есть код
+        </div>
+
+        <div v-if="error" class="general-helper general-error">{{ error }}</div>
+        <div v-if="message" class="general-helper">{{ message }}</div>
       </template>
 
       <template v-if="status == 'code'">
@@ -66,7 +80,8 @@
         </div>
 
         <button class="form-button-go" @click="auth()">Войти</button>
-        <div v-if="error" class="general-helper">{{ error }}</div>
+        <div v-if="error" class="general-helper general-error">{{ error }}</div>
+        <div v-if="message" class="general-helper">{{ message }}</div>
       </template>
     </div>
   </div>
@@ -81,7 +96,12 @@ export default {
       code: "",
       status: "phone",
       error: "",
+      message: "",
       errors: {},
+      send_title: "Прислать код",
+
+      have_code: false,
+      disabled_send: false,
 
       timer: {
         time: 60,
@@ -100,6 +120,7 @@ export default {
       this.phone = "";
     },
     startTimer() {
+      this.countDown();
       this.timer.interval = setInterval(this.countDown, 1000);
     },
     countDown() {
@@ -109,16 +130,22 @@ export default {
       } else if (n > 0) {
         n = n - 1;
         this.timer.time = n;
-        this.error = "Отправить новый код через " + n + " сек.";
+        this.disabled_send = true;
+        // this.message = "Отправить новый код через " + n + " сек.";
+
+        this.send_title = n + " сек";
       } else {
         clearInterval(this.timer.interval);
         this.timer.started = false;
-        this.error = "";
+        // this.message = "";
+
+        this.send_title = "Прислать код";
+        this.disabled_send = false;
       }
     },
 
     async auth(code) {
-      console.log(code);
+      // console.log(code);
       try {
         var phone_ = this.phone.replace(/\D+/g, "");
 
@@ -147,6 +174,7 @@ export default {
     },
 
     async sendPhone() {
+      this.disabled_send = false;
       try {
         var phone_ = this.phone.replace(/\D+/g, "");
         //
@@ -162,6 +190,20 @@ export default {
         // console.log(response);
         this.status = "code";
       } catch (error) {
+        // if (error.response.status)
+
+        console.log(error.response);
+
+        if (error.response.data.status == "error") {
+          this.error = error.response.data.message;
+
+          if (error.response.status == 429) {
+            this.disabled_send = true;
+            this.have_code = true;
+          }
+        }
+
+        // console.log(error.response.status);
         // this.error = error.response.data.message;
         // this.error = this.timer.message;
         if (error.response.data.errors) {
@@ -176,3 +218,25 @@ export default {
   },
 };
 </script>
+
+
+<style scoped>
+.have_code {
+  font-family: "FuturaLightC";
+  text-align: center;
+  font-size: 15px;
+  margin-top: 20px;
+  display: block;
+  cursor: pointer;
+  transition: 0.3s all ease-in-out;
+  color: #000;
+}
+
+.have_code:hover {
+  opacity: 0.5;
+}
+
+.general-error {
+  color: red;
+}
+</style>

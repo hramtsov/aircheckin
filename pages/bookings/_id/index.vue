@@ -21,26 +21,6 @@
       </nuxt-link>
     </div>
 
-    <Notify v-model="payment_success" type="success" title="Спасибо за оплату!">
-      <template slot="text"
-        >Ключи можно будет получить в день заезда, не забудьте взять с собой
-        паспорт</template
-      >
-    </Notify>
-
-    <Notify
-      v-model="payment_failed"
-      type="error"
-      title="Оплата не прошла"
-      time="10"
-    >
-      <template slot="text"
-        >Платёжная система не смогла произвести оплату, попробуйте
-        <nuxt-link :to="`/voucher/${$route.params.code}`">ещё раз</nuxt-link>
-        или обратитесь к администратору</template
-      >
-    </Notify>
-
     <div class="booking-person-name">
       {{ $auth.user.last_name }} {{ $auth.user.first_name }}
     </div>
@@ -148,13 +128,40 @@
           }}<span class="suf-rub">Ꝑ</span>
         </div>
         <button
+          :disabled="process.payment_tariff"
           v-if="booking.status == 4"
           @click="payTariff()"
-          class="form-button-go"
+          class="form-button-go form-button-go-tariff"
         >
-          Оплатить тариф
+          <template v-if="process.payment_tariff"
+            ><div class="donut"></div></template
+          ><template v-else>Оплатить тариф</template>
         </button>
       </div>
+
+      <Notify
+        v-model="payment_success"
+        type="success"
+        title="Спасибо за оплату!"
+      >
+        <template slot="text"
+          >Ключи можно будет получить в день заезда, не забудьте взять с собой
+          паспорт</template
+        >
+      </Notify>
+
+      <Notify
+        v-model="payment_failed"
+        type="error"
+        title="Оплата не прошла"
+        time="10"
+      >
+        <template slot="text"
+          >Платёжная система не смогла произвести оплату, попробуйте
+          <nuxt-link :to="`/voucher/${$route.params.code}`">ещё раз</nuxt-link>
+          или обратитесь к администратору</template
+        >
+      </Notify>
 
       <div class="booking-document-link" @click="openPdf">
         <div class="booking-document-icon">
@@ -269,6 +276,9 @@ export default {
   middleware: ["auth"],
   data() {
     return {
+      process: {
+        payment_tariff: false,
+      },
       index: null,
       booking: {},
       link: "",
@@ -334,6 +344,7 @@ export default {
 
   methods: {
     async payTariff() {
+      this.process.payment_tariff = true;
       if (this.booking.status == 4) {
         try {
           let response = await this.$axios.$post(
@@ -347,20 +358,46 @@ export default {
             this.payment_success = false;
             this.payment_failed = true;
           }
+
+          this.process.payment_tariff = false;
         } catch (error) {
           console.log(error.response);
+          this.process.payment_tariff = false;
         }
       }
     },
     async openPdf() {
+      //       export const downloadOrder = (_, item) => {
+      // 	return axios.get(`${url}/${item.id}/order/download`, {
+      // 		responseType: 'blob',
+      // 	}).then(({ data }) => {
+      // 		const url = window.URL.createObjectURL(new Blob([data]))
+      // 		const link = document.createElement('a')
+      // 		link.href = url
+      // 		link.setAttribute('download', 'booking_order.pdf')
+      // 		document.body.appendChild(link)
+      // 		link.click()
+      // 	})
+      // }
+
       try {
         let response = await this.$axios.$get(
-          `/renter/bookings/${this.$route.params.id}/download-order`
+          `/renter/bookings/${this.$route.params.id}/download-order`,
+          {
+            responseType: "blob",
+          }
         );
 
-        const file = new Blob([response], { type: "application/pdf" });
-        const fileURL = URL.createObjectURL(file);
-        window.open(fileURL, "_target");
+        const url = window.URL.createObjectURL(new Blob([response]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "booking_order.pdf");
+        document.body.appendChild(link);
+        link.click();
+
+        // const file = new Blob([response], { type: "application/pdf" });
+        // const fileURL = URL.createObjectURL(file);
+        // window.open(fileURL, "_target");
       } catch (error) {
         console.log(error.response);
       }
@@ -401,5 +438,9 @@ export default {
   padding: 20px 0;
   font-size: 15px;
   margin-top: 20px;
+}
+
+.form-button-go-tariff {
+  width: 160px;
 }
 </style>

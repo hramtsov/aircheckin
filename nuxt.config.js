@@ -71,6 +71,7 @@ export default {
   auth: {
     strategies: {
       local: {
+        maxAge: 2600000,
         user: { autoFetch: true, property: 'data', },
         endpoints: {
           login: { url: '/renter/create-token', method: 'post', propertyName: 'token' },

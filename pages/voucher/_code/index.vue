@@ -2,20 +2,17 @@
   <!-- <div>Ваучер - {{ $route.params.code }}</div> -->
 
   <div class="page-inner">
+    <!-- <div @click="process.payment_deposit = !process.payment_deposit">123</div> -->
+
     <template v-if="booking && booking.apartment">
       <div class="container">
         <Notify
           v-model="payment_success"
           type="success"
           title="Спасибо!"
+          text="После поступления оплаты на наш счёт станет доступна регистрация на этой странице"
           time="10"
         >
-          <template slot="text"
-            >После поступления оплаты на наш счёт станет доступна регистрация в
-            <nuxt-link :to="`/voucher/${$route.params.code}`"
-              >ваучере</nuxt-link
-            ></template
-          >
         </Notify>
 
         <Notify v-model="payment_failed" type="error" title="Оплата не прошла">
@@ -30,12 +27,13 @@
           <div class="title-welcome">УРА!</div>
           <div class="text-welcome">
             <p>
-              Здравствуйте! Мы забронировали для вас апартамент, для
-              подтверждения пожалуйста оплатите депозит до 21:00 Мск
+              Мы забронировали для вас апартамент, для подтверждения пожалуйста
+              оплатите депозит до {{ booking.confirm_timeout | date_t }} Мск
             </p>
             <p>
               Ключи можно будет получить на основании паспорта в день заезда по
-              адресу:<br /><span class="address-booking">{{
+              адресу
+              <span class="address-booking">{{
                 booking.apartment.address
               }}</span>
             </p>
@@ -43,17 +41,24 @@
 
           <div>
             <a
+              :disabled="process.payment_deposit"
               @click="payDeposit()"
               class="form-button-go"
               v-if="this.$auth.user && this.$auth.user.binded_card"
-              >Оплатить депозит</a
+            >
+              <template v-if="process.payment_deposit"
+                ><div class="donut"></div></template
+              ><template v-else>Оплатить депозит</template></a
             >
 
             <a
+              :disabled="process.payment_deposit"
               :href="deposit_link"
               class="form-button-go"
               v-if="!this.$auth.user || !this.$auth.user.binded_card"
-              >Оплатить депозит</a
+              ><template v-if="process.payment_deposit"
+                ><div class="donut"></div></template
+              ><template v-else>Оплатить депозит</template></a
             >
 
             <div v-if="booking.status < 3" class="waiting-deposit">
@@ -210,7 +215,10 @@
             <div class="booking-header-title">Данные депозита</div>
           </div>
 
-          <div class="booking-row">
+          <div
+            v-if="booking.status <= 3 && booking.deposit > 0"
+            class="booking-row"
+          >
             <div class="booking-row-title">Ваш депозит</div>
             <div class="booking-row-value">
               {{ booking.deposit | number }}<span class="suf-rub">₽</span>
@@ -242,6 +250,11 @@ export default {
       booking: {},
       payment_success: false,
       payment_failed: false,
+
+      process: {
+        payment_deposit: false,
+      },
+
       error: "",
       deposit_link: "",
       index: null,
@@ -320,15 +333,18 @@ export default {
       }
     },
     async payDeposit() {
+      this.process.payment_deposit = true;
       try {
         let response = await this.$axios.$post(
           `/renter/bookings/${this.booking.id}/pay-deposit`
         );
         if (response.status) {
+          this.process.payment_deposit = false;
           this.updateBooking();
         }
       } catch (error) {
         console.log(error.response);
+        this.process.payment_deposit = false;
       }
     },
   },
