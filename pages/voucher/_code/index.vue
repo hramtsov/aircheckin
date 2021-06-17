@@ -247,7 +247,7 @@ export default {
   // middleware: ["auth"],
   data() {
     return {
-      interval_check_time: 2000,
+      interval_check_time: 5000,
       booking: {},
       payment_success: false,
       payment_failed: false,
