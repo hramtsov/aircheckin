@@ -150,12 +150,7 @@
         >
       </Notify>
 
-      <Notify
-        v-model="payment_failed"
-        type="error"
-        title="Оплата не прошла"
-        time="10"
-      >
+      <Notify v-model="payment_failed" type="error" title="Оплата не прошла">
         <template slot="text"
           >Платёжная система не смогла произвести оплату, попробуйте
           <nuxt-link :to="`/voucher/${$route.params.code}`">ещё раз</nuxt-link>
@@ -163,26 +158,34 @@
         >
       </Notify>
 
-      <div class="booking-document-link" @click="openPdf">
-        <div class="booking-document-icon">
-          <svg
-            width="28"
-            height="36"
-            viewBox="0 0 28 36"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M24.7692 35.7778H3.23077C1.44925 35.7778 -1.90735e-06 34.3672 -1.90735e-06 32.6332V10.4818H7.53846C9.31998 10.4818 10.7692 9.0712 10.7692 7.33724V0H24.7692C26.5507 0 28 1.41057 28 3.14453V32.6332C28 34.3672 26.5507 35.7778 24.7692 35.7778ZM20.4615 14.7444H7.53846C6.94321 14.7444 6.46154 15.2132 6.46154 15.7925C6.46154 16.3719 6.94321 16.8407 7.53846 16.8407H20.4615C21.0568 16.8407 21.5385 16.3719 21.5385 15.7925C21.5385 15.2132 21.0568 14.7444 20.4615 14.7444ZM20.4615 18.9371H7.53846C6.94321 18.9371 6.46154 19.4059 6.46154 19.9852C6.46154 20.5646 6.94321 21.0334 7.53846 21.0334H20.4615C21.0568 21.0334 21.5385 20.5646 21.5385 19.9852C21.5385 19.4059 21.0568 18.9371 20.4615 18.9371ZM20.4615 23.1298H7.53846C6.94321 23.1298 6.46154 23.5986 6.46154 24.178C6.46154 24.7573 6.94321 25.2261 7.53846 25.2261H20.4615C21.0568 25.2261 21.5385 24.7573 21.5385 24.178C21.5385 23.5986 21.0568 23.1298 20.4615 23.1298ZM20.4615 27.3225H11.8462C11.2509 27.3225 10.7692 27.7913 10.7692 28.3707C10.7692 28.95 11.2509 29.4188 11.8462 29.4188H20.4615C21.0568 29.4188 21.5385 28.95 21.5385 28.3707C21.5385 27.7913 21.0568 27.3225 20.4615 27.3225Z"
-              fill="#F5BF53"
-            />
-            <path
-              d="M7.50661 8.37355H0.777886L8.55566 0.76123V7.34681C8.55566 7.91329 8.08541 8.37355 7.50661 8.37355Z"
-              fill="#F5BF53"
-            />
-          </svg>
-        </div>
-        <span>Справка о проживании</span>
+      <div
+        :disabled="process.open_pdf"
+        v-if="booking.status >= 5"
+        class="booking-document-link"
+        @click="openPdf"
+      >
+        <template v-if="process.open_pdf"><div class="donut"></div></template
+        ><template v-else>
+          <div class="booking-document-icon">
+            <svg
+              width="28"
+              height="36"
+              viewBox="0 0 28 36"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M24.7692 35.7778H3.23077C1.44925 35.7778 -1.90735e-06 34.3672 -1.90735e-06 32.6332V10.4818H7.53846C9.31998 10.4818 10.7692 9.0712 10.7692 7.33724V0H24.7692C26.5507 0 28 1.41057 28 3.14453V32.6332C28 34.3672 26.5507 35.7778 24.7692 35.7778ZM20.4615 14.7444H7.53846C6.94321 14.7444 6.46154 15.2132 6.46154 15.7925C6.46154 16.3719 6.94321 16.8407 7.53846 16.8407H20.4615C21.0568 16.8407 21.5385 16.3719 21.5385 15.7925C21.5385 15.2132 21.0568 14.7444 20.4615 14.7444ZM20.4615 18.9371H7.53846C6.94321 18.9371 6.46154 19.4059 6.46154 19.9852C6.46154 20.5646 6.94321 21.0334 7.53846 21.0334H20.4615C21.0568 21.0334 21.5385 20.5646 21.5385 19.9852C21.5385 19.4059 21.0568 18.9371 20.4615 18.9371ZM20.4615 23.1298H7.53846C6.94321 23.1298 6.46154 23.5986 6.46154 24.178C6.46154 24.7573 6.94321 25.2261 7.53846 25.2261H20.4615C21.0568 25.2261 21.5385 24.7573 21.5385 24.178C21.5385 23.5986 21.0568 23.1298 20.4615 23.1298ZM20.4615 27.3225H11.8462C11.2509 27.3225 10.7692 27.7913 10.7692 28.3707C10.7692 28.95 11.2509 29.4188 11.8462 29.4188H20.4615C21.0568 29.4188 21.5385 28.95 21.5385 28.3707C21.5385 27.7913 21.0568 27.3225 20.4615 27.3225Z"
+                fill="#F5BF53"
+              />
+              <path
+                d="M7.50661 8.37355H0.777886L8.55566 0.76123V7.34681C8.55566 7.91329 8.08541 8.37355 7.50661 8.37355Z"
+                fill="#F5BF53"
+              />
+            </svg>
+          </div>
+          <span>Справка о проживании</span>
+        </template>
       </div>
 
       <nuxt-link
@@ -278,6 +281,7 @@ export default {
     return {
       process: {
         payment_tariff: false,
+        open_pdf: false,
       },
       index: null,
       booking: {},
@@ -345,6 +349,7 @@ export default {
   methods: {
     async payTariff() {
       this.process.payment_tariff = true;
+      this.payment_failed = false;
       if (this.booking.status == 4) {
         try {
           let response = await this.$axios.$post(
@@ -361,25 +366,14 @@ export default {
 
           this.process.payment_tariff = false;
         } catch (error) {
+          this.payment_failed = true;
           console.log(error.response);
           this.process.payment_tariff = false;
         }
       }
     },
     async openPdf() {
-      //       export const downloadOrder = (_, item) => {
-      // 	return axios.get(`${url}/${item.id}/order/download`, {
-      // 		responseType: 'blob',
-      // 	}).then(({ data }) => {
-      // 		const url = window.URL.createObjectURL(new Blob([data]))
-      // 		const link = document.createElement('a')
-      // 		link.href = url
-      // 		link.setAttribute('download', 'booking_order.pdf')
-      // 		document.body.appendChild(link)
-      // 		link.click()
-      // 	})
-      // }
-
+      this.process.open_pdf = true;
       try {
         let response = await this.$axios.$get(
           `/renter/bookings/${this.$route.params.id}/download-order`,
@@ -395,11 +389,10 @@ export default {
         document.body.appendChild(link);
         link.click();
 
-        // const file = new Blob([response], { type: "application/pdf" });
-        // const fileURL = URL.createObjectURL(file);
-        // window.open(fileURL, "_target");
+        this.process.open_pdf = false;
       } catch (error) {
         console.log(error.response);
+        this.process.open_pdf = false;
       }
     },
     async updateBooking() {

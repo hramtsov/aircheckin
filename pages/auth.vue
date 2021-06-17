@@ -14,24 +14,22 @@
           class="form-text"
           type="tel"
           placeholder="Номер телефона"
-          v-mask="'+# (###) ###-##-##'"
+          v-mask="['+# ##########', '+### #########']"
           v-model="phone"
+          @focus="focusPhone"
         />
 
         <div v-if="errors.phone" class="text-error">{{ errors.phone[0] }}</div>
         <button
           class="form-button-go"
           @click="sendPhone()"
-          :disabled="disabled_send"
+          :disabled="process.send_code"
         >
-          {{ send_title }}
+          <template v-if="process.send_code"><div class="donut"></div></template
+          ><template v-else>{{ send_title }}</template>
         </button>
 
-        <div
-          v-if="have_code && phone"
-          class="have_code"
-          @click="status = 'code'"
-        >
+        <div v-if="phone" class="have_code" @click="status = 'code'">
           У меня уже есть код
         </div>
 
@@ -42,7 +40,7 @@
       <template v-if="status == 'code'">
         <div class="top-bar">
           <!-- Кнопка назад -->
-          <div class="link-back" @click="back()">
+          <div class="link-back" @click="back">
             <svg
               width="23"
               height="23"
@@ -72,6 +70,7 @@
             separator=""
             :shouldAutoFocus="true"
             @on-complete="auth"
+            ref="inputCode"
           />
         </div>
 
@@ -79,7 +78,10 @@
           {{ errors.code[0] }}
         </div>
 
-        <button class="form-button-go" @click="auth()">Войти</button>
+        <button :disabled="process.login" class="form-button-go" @click="auth">
+          <template v-if="process.login"><div class="donut"></div></template
+          ><template v-else>Войти</template>
+        </button>
         <div v-if="error" class="general-helper general-error">{{ error }}</div>
         <div v-if="message" class="general-helper">{{ message }}</div>
       </template>
@@ -92,6 +94,11 @@ import VieOtpInput from "@bachdgvn/vue-otp-input";
 export default {
   data() {
     return {
+      process: {
+        send_code: false,
+        login: false,
+      },
+
       phone: "", //
       code: "",
       status: "phone",
@@ -115,9 +122,14 @@ export default {
     VieOtpInput,
   },
   methods: {
+    focusPhone() {
+      if (this.phone.length == 0) {
+        this.phone = "+";
+      }
+    },
     back() {
       this.status = "phone";
-      this.phone = "";
+      // this.phone = "";
     },
     startTimer() {
       this.countDown();
@@ -145,7 +157,7 @@ export default {
     },
 
     async auth(code) {
-      // console.log(code);
+      this.process.login = true;
       try {
         var phone_ = this.phone.replace(/\D+/g, "");
 
@@ -157,16 +169,30 @@ export default {
             },
           })
           .then(() => {
+            this.process.login = false;
+
             if (this.$store.state.voucher_code) {
               this.$router.push(`/voucher/${this.$store.state.voucher_code}`);
             } else {
               this.$router.push(`/bookings`);
             }
-            // console.log();
           });
+
         // console.log(response.data);
       } catch (error) {
-        console.log(error);
+        this.process.login = false;
+
+        this.error = error.response.data.message;
+        this.errors = error.response.data.errors;
+
+        this.$refs.inputCode.clearInput();
+
+        // this.code = "";
+
+        // console.log(error.response);
+
+        // this.error =
+        // console.log(error);
         // if (error.response.status == 422) {
         //   this.errors = error.response.data.errors;
         // }
@@ -174,7 +200,8 @@ export default {
     },
 
     async sendPhone() {
-      this.disabled_send = false;
+      // this.disabled_send = false;
+      this.process.send_code = true;
       try {
         var phone_ = this.phone.replace(/\D+/g, "");
         //
@@ -189,6 +216,8 @@ export default {
         );
         // console.log(response);
         this.status = "code";
+
+        this.process.send_code = false;
       } catch (error) {
         // if (error.response.status)
 
@@ -197,10 +226,12 @@ export default {
         if (error.response.data.status == "error") {
           this.error = error.response.data.message;
 
-          if (error.response.status == 429) {
-            this.disabled_send = true;
-            this.have_code = true;
-          }
+          // if (error.response.status == 429) {
+          // this.disabled_send = true;
+          // this.have_code = true;
+          // }
+
+          this.process.send_code = false;
         }
 
         // console.log(error.response.status);

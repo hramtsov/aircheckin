@@ -247,6 +247,7 @@ export default {
   // middleware: ["auth"],
   data() {
     return {
+      interval_check_time: 2000,
       booking: {},
       payment_success: false,
       payment_failed: false,
@@ -334,17 +335,38 @@ export default {
     },
     async payDeposit() {
       this.process.payment_deposit = true;
+      this.payment_failed = false;
       try {
         let response = await this.$axios.$post(
           `/renter/bookings/${this.booking.id}/pay-deposit`
         );
+        console.log(response);
         if (response.status) {
           this.process.payment_deposit = false;
           this.updateBooking();
+        } else {
+          setTimeout(this.checkPayDeposit(), this.interval_check_time);
         }
       } catch (error) {
         console.log(error.response);
         this.process.payment_deposit = false;
+        this.payment_failed = true;
+      }
+    },
+
+    async checkPayDeposit() {
+      console.log("test");
+      try {
+        let response = await this.$axios.$get(
+          `/renter/bookings/by-code/${this.$route.params.code}`
+        );
+        this.booking = response.data;
+        console.log(response.data);
+        if (!response.data.deposit_paid) {
+          setTimeout(this.checkPayDeposit(), this.interval_check_time);
+        }
+      } catch (error) {
+        console.log(error.response);
       }
     },
   },

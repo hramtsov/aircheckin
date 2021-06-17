@@ -85,6 +85,7 @@
         </span>
         <select class="form-text" v-model="form.passport_type">
           <option value="1">Паспорт РФ</option>
+          <option value="2">Зарубежный паспорт</option>
         </select>
       </div>
 

@@ -224,9 +224,14 @@
       </template>
     </div>
 
-    <a :href="bind_link" v-if="bind_link" class="form-button-go"
-      >Привязать карту</a
+    <button
+      :disabled="process.bind_card"
+      class="form-button-go"
+      @click="bindCard"
     >
+      <template v-if="process.bind_card"><div class="donut"></div></template
+      ><template v-else>Привязать карту</template>
+    </button>
   </div>
 </template>
 
@@ -237,6 +242,9 @@ export default {
   middleware: ["auth"],
   data() {
     return {
+      process: {
+        bind_card: false,
+      },
       edit: false,
       cards: {},
       bind_link: "",
@@ -258,12 +266,7 @@ export default {
     return { cards: cards, bind_warning: bind_warning }; //  bind_link: response_bind_link.url
   },
 
-  async mounted() {
-    let response_bind_link = await this.$axios.$get(
-      `/renter/cards/binding-url`
-    );
-    this.bind_link = response_bind_link.url;
-
+  mounted() {
     var binding = this.$route.query.binding;
 
     if (binding == "failed") {
@@ -276,9 +279,40 @@ export default {
       this.bind_success = true;
       setTimeout(this.successFalse, 10000);
     }
+
+    //   let response_bind_link = await this.$axios.$get(
+    //     `/renter/cards/binding-url`
+    //   );
+    //   this.bind_link = response_bind_link.url;
+
+    //   var binding = this.$route.query.binding;
+
+    //   if (binding == "failed") {
+    //     this.bind_error = true;
+    //     this.bind_success = false;
+    //     setTimeout(this.errorFalse, 10000);
+    //   }
+    //   if (binding == "success") {
+    //     this.bind_error = false;
+    //     this.bind_success = true;
+    //     setTimeout(this.successFalse, 10000);
+    //   }
   },
 
   methods: {
+    async bindCard() {
+      this.process.bind_card = true;
+      try {
+        let response_bind_link = await this.$axios.$get(
+          `/renter/cards/binding-url`
+        );
+        window.location.href = response_bind_link.url;
+        this.process.bind_card = false;
+      } catch (error) {
+        console.log(error.response);
+        this.process.bind_card = false;
+      }
+    },
     errorFalse() {
       this.bind_error = false;
     },
