@@ -76,9 +76,10 @@
               ><template v-else>Оплатить депозит</template></a
             >
 
+            <!-- :href="deposit_link" -->
             <a
               :disabled="process.payment_deposit"
-              :href="deposit_link"
+              @click="payDepositCard()"
               class="form-button-go"
               v-if="!this.$auth.user || !this.$auth.user.binded_card"
               ><template v-if="process.payment_deposit"
@@ -335,23 +336,25 @@ export default {
         );
         this.booking = response.data;
 
-        // Загружаем ссылку для оплаты депозита
-        if (this.booking.status < 3) {
-          try {
-            if (!this.$auth.user || !this.$auth.user.binded_card) {
-              let response = await this.$axios.$get(
-                `/renter/bookings/${this.booking.id}/deposit-payment-url`
-              );
+        // this.payDepositCard();
 
-              if (response) {
-                console.log(response.url);
-                this.deposit_link = response.url;
-              }
-            }
-          } catch (error) {
-            this.error = error.response.data.message;
-          }
-        }
+        // Загружаем ссылку для оплаты депозита
+        // if (this.booking.status < 3) {
+        //   try {
+        //     if (!this.$auth.user || !this.$auth.user.binded_card) {
+        //       let response = await this.$axios.$get(
+        //         `/renter/bookings/${this.booking.id}/deposit-payment-url`
+        //       );
+
+        //       if (response) {
+        //         // console.log(response.url);
+        //         this.deposit_link = response.url;
+        //       }
+        //     }
+        //   } catch (error) {
+        //     this.error = error.response.data.message;
+        //   }
+        // }
         //
       } catch (error) {
         console.log(error.response);
@@ -359,6 +362,28 @@ export default {
         this.general_error = error.response.data.message;
       }
     },
+
+    async payDepositCard() {
+      // Загружаем ссылку для оплаты депозита
+      if (this.booking.status < 3) {
+        try {
+          if (!this.$auth.user || !this.$auth.user.binded_card) {
+            let response = await this.$axios.$get(
+              `/renter/bookings/${this.booking.id}/deposit-payment-url`
+            );
+
+            if (response) {
+              window.location.href = response.url;
+              // console.log(response.url);
+              // this.deposit_link = response.url;
+            }
+          }
+        } catch (error) {
+          this.error = error.response.data.message;
+        }
+      }
+    },
+
     async payDeposit() {
       this.process.payment_deposit = true;
       this.payment_failed = false;
