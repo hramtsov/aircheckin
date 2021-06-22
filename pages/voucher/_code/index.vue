@@ -364,6 +364,8 @@ export default {
     },
 
     async payDepositCard() {
+      this.process.payment_deposit = true;
+      this.payment_failed = false;
       // Загружаем ссылку для оплаты депозита
       if (this.booking.status < 3) {
         try {
@@ -373,6 +375,7 @@ export default {
             );
 
             if (response) {
+              this.process.payment_deposit = false;
               window.location.href = response.url;
               // console.log(response.url);
               // this.deposit_link = response.url;
@@ -380,6 +383,8 @@ export default {
           }
         } catch (error) {
           this.error = error.response.data.message;
+          this.process.payment_deposit = false;
+          this.payment_failed = true;
         }
       }
     },
@@ -393,7 +398,7 @@ export default {
         );
         console.log(response);
         if (response.status) {
-          this.process.payment_deposit = false;
+          // this.process.payment_deposit = false;
           this.updateBooking();
         } else {
           setTimeout(this.checkPayDeposit(), this.interval_check_time);
