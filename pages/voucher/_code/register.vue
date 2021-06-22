@@ -154,8 +154,12 @@
         </div>
       </div>
 
-      <button class="form-button-go" @click="register()">
+      <button v-if="!process.reg" class="form-button-go" @click="register">
         Зарегистрироваться
+      </button>
+
+      <button v-if="process.reg" disabled class="form-button-go">
+        <div class="donut"></div>
       </button>
     </div>
 
@@ -170,19 +174,20 @@ export default {
   middleware: ["auth"],
   data() {
     return {
+      process: {
+        reg: false,
+      },
       booking: {},
       form: {
-        first_name: this.$auth.user.first_name,
-        last_name: this.$auth.user.last_name,
-        middle_name: this.$auth.user.middle_name,
-        phone: this.$auth.user.phone,
-        email: this.$auth.user.email,
-        birth_date: this.$auth.user.birth_date,
-        passport_type: this.$auth.user.passport_type
-          ? this.$auth.user.passport_type
-          : 1,
-        passport_serial: this.$auth.user.passport_serial,
-        passport_number: this.$auth.user.passport_number,
+        first_name: "",
+        last_name: "",
+        middle_name: "",
+        phone: "",
+        email: "",
+        birth_date: "",
+        passport_type: "",
+        passport_serial: "",
+        passport_number: "",
         description: "",
         personal_data: false,
         i_agree: false,
@@ -207,6 +212,33 @@ export default {
   mounted() {
     this.checkStatus();
     this.form.phone = this.$auth.user.phone;
+
+    this.form.first_name = this.$auth.user.first_name
+      ? this.$auth.user.first_name
+      : "";
+    this.form.last_name = this.$auth.user.last_name
+      ? this.$auth.user.last_name
+      : "";
+    this.form.middle_name = this.$auth.user.middle_name
+      ? this.$auth.user.middle_name
+      : "";
+
+    this.form.email = this.$auth.user.email ? this.$auth.user.email : "";
+    this.form.birth_date = this.$auth.user.birth_date
+      ? this.$auth.user.birth_date
+      : "";
+
+    this.form.passport_type = this.$auth.user.passport_type
+      ? this.$auth.user.passport_type
+      : "";
+
+    this.form.passport_serial = this.$auth.user.passport_serial
+      ? this.$auth.user.passport_serial
+      : "";
+
+    this.form.passport_number = this.$auth.user.passport_number
+      ? this.$auth.user.passport_number
+      : "";
   },
 
   watch: {
@@ -220,6 +252,7 @@ export default {
 
   methods: {
     async register() {
+      this.process.reg = true;
       // Валидация
       if (this.validate()) {
         try {
@@ -230,10 +263,14 @@ export default {
           if (response.status) {
             this.$router.push(`/bookings/${this.booking.id}`);
           }
+          this.process.reg = false;
           console.log(response);
         } catch (error) {
+          this.process.reg = false;
           console.log(error.response);
         }
+      } else {
+        this.process.reg = false;
       }
     },
 
