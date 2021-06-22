@@ -20,13 +20,23 @@
         />
 
         <div v-if="errors.phone" class="text-error">{{ errors.phone[0] }}</div>
+
         <button
+          v-if="!process.disabled_send_code"
           class="form-button-go"
           @click="sendPhone()"
-          :disabled="process.send_code"
         >
-          <template v-if="process.send_code"><div class="donut"></div></template
-          ><template v-else>{{ send_title }}</template>
+          Прислать код
+          <!-- {{ send_title }} -->
+        </button>
+
+        <button
+          v-if="process.disabled_send_code"
+          class="form-button-go"
+          disabled
+        >
+          <template v-if="timer.started">{{ send_title }}</template>
+          <div v-else class="donut"></div>
         </button>
 
         <div v-if="phone" class="have_code" @click="status = 'code'">
@@ -95,7 +105,7 @@ export default {
   data() {
     return {
       process: {
-        send_code: false,
+        disabled_send_code: false,
         login: false,
       },
 
@@ -105,10 +115,10 @@ export default {
       error: "",
       message: "",
       errors: {},
-      send_title: "Прислать код",
+      send_title: "60 сек",
 
       have_code: false,
-      disabled_send: false,
+      // disabled_send: false,
 
       timer: {
         time: 60,
@@ -139,10 +149,12 @@ export default {
       var n = this.timer.time;
       if (!this.timer.started) {
         this.timer.started = true;
+        this.process.disabled_send_code = true;
       } else if (n > 0) {
+        this.process.disabled_send_code = true;
         n = n - 1;
         this.timer.time = n;
-        this.disabled_send = true;
+        // this.disabled_send = true;
         // this.message = "Отправить новый код через " + n + " сек.";
 
         this.send_title = n + " сек";
@@ -152,7 +164,9 @@ export default {
         // this.message = "";
 
         this.send_title = "Прислать код";
-        this.disabled_send = false;
+        // this.disabled_send = false;
+
+        this.process.disabled_send_code = false;
       }
     },
 
@@ -201,7 +215,7 @@ export default {
 
     async sendPhone() {
       // this.disabled_send = false;
-      this.process.send_code = true;
+      this.process.disabled_send_code = true;
       try {
         var phone_ = this.phone.replace(/\D+/g, "");
         //
@@ -217,26 +231,16 @@ export default {
         // console.log(response);
         this.status = "code";
 
-        this.process.send_code = false;
+        this.process.disabled_send_code = false;
       } catch (error) {
-        // if (error.response.status)
-
         console.log(error.response);
+
+        this.process.disabled_send_code = true;
 
         if (error.response.data.status == "error") {
           this.error = error.response.data.message;
-
-          // if (error.response.status == 429) {
-          // this.disabled_send = true;
-          // this.have_code = true;
-          // }
-
-          this.process.send_code = false;
         }
 
-        // console.log(error.response.status);
-        // this.error = error.response.data.message;
-        // this.error = this.timer.message;
         if (error.response.data.errors) {
           this.errors = error.response.data.errors;
         } else {
