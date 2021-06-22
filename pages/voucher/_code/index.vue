@@ -4,22 +4,47 @@
   <div class="page-inner">
     <!-- <div @click="process.payment_deposit = !process.payment_deposit">123</div> -->
 
+    <div class="container -container-20">
+      <Notify v-model="general_error" type="error" title="Ошибка">
+        <template slot="text">{{ general_error }}</template>
+      </Notify>
+
+      <div v-if="general_error">
+        <nuxt-link class="form-button-go" to="/">На главную</nuxt-link>
+      </div>
+    </div>
+
     <template v-if="booking && booking.apartment">
       <div class="container">
-        <Notify
-          v-model="payment_success"
-          type="success"
-          title="Спасибо!"
-          text="После поступления оплаты на наш счёт станет доступна регистрация на этой странице"
-          time="10"
-        >
-        </Notify>
+        <template v-if="!booking.deposit_paid">
+          <Notify
+            v-model="payment_success"
+            type="success"
+            title="Спасибо!"
+            text="После поступления оплаты на наш счёт станет доступна регистрация на этой странице"
+          >
+          </Notify>
+        </template>
+        <template v-if="booking.deposit_paid">
+          <Notify
+            v-model="payment_success"
+            type="success"
+            title="Спасибо!"
+            text="Мы получили оплату депозита"
+            time="10"
+          >
+          </Notify>
+        </template>
 
         <Notify v-model="payment_failed" type="error" title="Оплата не прошла">
           <template slot="text"
             >Платёжная система не смогла произвести оплату, попробуйте ещё раз
             или обратитесь к администратору</template
           >
+        </Notify>
+
+        <Notify v-model="error" type="error" title="Ошибка">
+          <template slot="text">{{ error }}</template>
         </Notify>
 
         <!-- Если депозит не внесен -->
@@ -234,8 +259,6 @@
         </div>
       </div>
     </template>
-
-    <template v-if="error">{{ error }}</template>
   </div>
 </template>
 
@@ -247,6 +270,7 @@ export default {
   // middleware: ["auth"],
   data() {
     return {
+      general_error: "",
       interval_check_time: 5000,
       booking: {},
       payment_success: false,
@@ -331,6 +355,8 @@ export default {
         //
       } catch (error) {
         console.log(error.response);
+
+        this.general_error = error.response.data.message;
       }
     },
     async payDeposit() {
@@ -385,5 +411,9 @@ export default {
 .address-booking {
   /* font-family: "FuturaLightC"; */
   font-weight: 500;
+}
+
+.-container-20 {
+  margin-top: -20px;
 }
 </style>

@@ -178,7 +178,9 @@ export default {
         phone: this.$auth.user.phone,
         email: this.$auth.user.email,
         birth_date: this.$auth.user.birth_date,
-        passport_type: this.$auth.user.passport_type,
+        passport_type: this.$auth.user.passport_type
+          ? this.$auth.user.passport_type
+          : 1,
         passport_serial: this.$auth.user.passport_serial,
         passport_number: this.$auth.user.passport_number,
         description: "",

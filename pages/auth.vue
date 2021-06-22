@@ -14,8 +14,8 @@
           class="form-text"
           type="tel"
           placeholder="Номер телефона"
-          v-mask="['+# ##########', '+### #########']"
           v-model="phone"
+          v-mask="['+# ##########', '+### #########']"
           @focus="focusPhone"
         />
 
