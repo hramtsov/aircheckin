@@ -37,7 +37,6 @@ export default {
     { src: '~/plugins/slider.js', ssr: false },
     { src: '~/plugins/echo.js', ssr: false },
     { src: '~/plugins/components.js' },
-    // { src: '~/plugins/socketio', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

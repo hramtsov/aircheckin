@@ -1,10 +1,9 @@
 <template>
   <div class="relative">
     <header>
-      <nuxt-link v-if="$route.name != 'index'" to="/" class="logo"
-        >aeroapart.ru</nuxt-link
-      >
-      <div v-if="$route.name == 'index'" class="logo">aeroapart.ru</div>
+      <!-- v-if="$route.name != 'index'" -->
+      <nuxt-link to="/" class="logo">aeroapart.ru</nuxt-link>
+      <!-- <div v-if="$route.name == 'index'" class="logo">aeroapart.ru</div> -->
 
       <div v-if="opened == false" @click="opened = true" class="burger">
         <svg

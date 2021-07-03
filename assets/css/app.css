@@ -81,14 +81,14 @@ select {
 }
 
 
-* {
+/* * {
 	-webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-}
+} */
 
 a:active, a:focus { outline: none; }
 input, textarea {outline:none;}
@@ -265,13 +265,12 @@ select.form-text {
 	font-size: 13px;
 	line-height: 18px;
 
-	outline: 0;
+	/* outline: 0;
     -webkit-appearance: none;
     -moz-appearance: none;
     -ms-appearance: none;
-	appearance: none !important;
+	appearance: none !important; */
 
-	/* margin-bottom: 10px; */
 
 	
 }
