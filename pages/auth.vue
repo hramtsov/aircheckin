@@ -11,7 +11,7 @@
         </div>
 
         <input
-          class="form-text"
+          class="form-text phone-input"
           type="tel"
           placeholder="Номер телефона"
           v-model="phone"
@@ -273,5 +273,9 @@ export default {
 
 .general-error {
   color: red;
+}
+
+.phone-input {
+  text-align: center;
 }
 </style>

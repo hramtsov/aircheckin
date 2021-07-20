@@ -66,7 +66,7 @@
       </svg>
       <span>{{ $auth.user.phone | phone_number }}</span>
     </div>
-    <div class="booking-apartment-name">{{ booking.apartment.name }}</div>
+    <div v-if="booking.apartment && booking.apartment.name" class="booking-apartment-name">{{ booking.apartment.name }}</div>
 
     <div class="about-booking">
       <div class="booking-header">
@@ -115,7 +115,7 @@
         </div>
       </div>
 
-      <div class="booking-row">
+      <div class="booking-row" v-if="booking.apartment && booking.apartment.address" >
         <div class="booking-row-title">Адрес</div>
         <div class="booking-row-value">
           {{ booking.apartment.address }}
@@ -209,7 +209,7 @@
         <span>Кассовый чек</span></nuxt-link
       >
 
-      <div class="apartment-swiper">
+      <div class="apartment-swiper" v-if="booking.apartment && booking.apartment.images">
         <CoolLightBox
           :items="booking.apartment.images"
           :index="index"

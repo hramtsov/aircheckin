@@ -23,6 +23,13 @@
     />
 
     <Notify
+      v-model="delete_error"
+      type="error"
+      title="Не удалось отвязать карту"
+      :text="delete_error_message"
+    />
+
+    <Notify
       v-model="bind_warning"
       type="warning"
       title="Внимание"
@@ -242,6 +249,8 @@ export default {
   middleware: ["auth"],
   data() {
     return {
+      delete_error: false,
+      delete_error_message: "",
       process: {
         bind_card: false,
       },
@@ -338,6 +347,7 @@ export default {
       }
     },
     async deleteCard(id) {
+      this.delete_error = false;
       try {
         let response = await this.$axios.$delete(`/renter/cards/${id}`);
         if (response.status) {
@@ -347,7 +357,11 @@ export default {
         }
         console.log(response);
       } catch (error) {
-        console.log(error.response);
+
+        this.delete_error = true;
+        this.delete_error_message = error.response.data.message;
+
+        console.log(error.response.data.message);
       }
     },
     checkActive() {

@@ -435,6 +435,8 @@ select.form-text {
 	background: #fff;
 	border-radius: 50%;
 	box-shadow: none;
+
+	font-weight: 500;
 }
 
 .form-code-text input:focus {

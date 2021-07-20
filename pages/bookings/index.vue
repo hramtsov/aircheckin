@@ -26,7 +26,7 @@
         <nuxt-link :to="`/bookings/${booking.id}`" class="booking-item">
           <div class="booking-header">
             <div class="booking-photo-mini">
-              <template v-if="booking.apartment.images.length > 0">
+              <template v-if="booking.apartment && booking.apartment.images && booking.apartment.images.length > 0">
                 <div
                   :style="`background-image: url(${booking.apartment.images[0].thumb})`"
                   class="booking-photo-mini-bg"
@@ -86,7 +86,7 @@
                   </svg>
                 </span>
               </div>
-              <div class="booking-apartment-name">
+              <div v-if="booking.apartment && booking.apartment.name" class="booking-apartment-name">
                 {{ booking.apartment.name }}
               </div>
               <div class="booking-dates">
@@ -98,7 +98,7 @@
             </div>
           </div>
 
-          <div class="booking-apartment-address">
+          <div v-if="booking.apartment && booking.apartment.address" class="booking-apartment-address">
             {{ booking.apartment.address }}
           </div>
 
@@ -177,6 +177,7 @@ export default {
 
   async asyncData({ $axios, error, params }) {
     let response = await $axios.$get(`/renter/bookings`);
+    // console.log(response.data)
     return { bookings: response.data };
   },
 
