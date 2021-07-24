@@ -83,7 +83,7 @@
             />
           </svg>
         </span>
-        <select class="form-text" v-model="form.passport_type">
+        <select placeholder="Типа паспорта" class="form-text" v-model="form.passport_type">
           <option value="1">Паспорт РФ</option>
           <option value="2">Зарубежный паспорт</option>
         </select>
@@ -185,7 +185,7 @@ export default {
         phone: "",
         email: "",
         birth_date: "",
-        passport_type: "",
+        passport_type: 1,
         passport_serial: "",
         passport_number: "",
         description: "",

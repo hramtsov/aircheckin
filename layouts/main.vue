@@ -2,7 +2,15 @@
   <div class="bgYellow">
     <Header />
 
-    <div class="main-text">aeroapart.ru</div>
+    <div class="main-text">
+      <div>aeroapart.ru</div>
+      <template v-if="!$auth.loggedIn">
+        <div>
+          <nuxt-link to="/auth" class="auth-btn">войти</nuxt-link>
+        </div>
+      </template>
+    </div>
+    
 
     <!-- <Nuxt /> -->
 
@@ -72,5 +80,13 @@ export default {
   z-index: 100;
   font-family: "FuturaDemiC";
   font-size: 24px;
+}
+
+.auth-btn {
+  width: 100%;
+  display: block;
+  margin: 30px auto 20px;
+  text-align: center;
+  cursor: pointer;
 }
 </style>
